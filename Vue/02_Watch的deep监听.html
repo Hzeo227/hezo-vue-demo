@@ -1,0 +1,59 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+
+  <div id="app">
+    <h2>{{message}}</h2>
+    <button @click="changeMessage()">change</button>
+  </div>
+  
+  <script src="./lib/vue.js"></script>
+  <script>
+    // 1.创建app
+    const app = Vue.createApp({
+      // data: option api
+      data: function() {
+        return {
+          message: "Hello Vue",
+          obj: {
+            name: "zeo",
+            age: "12"
+          }
+        }
+      },
+      methods:{
+        changeMessage() {
+          this.message = "Hello Zeo"
+
+          // 改变对象
+          // this.obj = {name: "kobe"}
+
+          // 改变对象中嵌套属性的变化, watch不会监听，需要设置deep监听
+          this.obj.name = "kobe"
+        },
+      },
+      watch: {
+        message: {
+          handler(newValue, oldValue) {
+            console.log("message 的数据发生了变化", newValue, oldValue)
+          }
+        },
+        obj: {
+          handler(newValue, oldValue) {
+            console.log("obj 的数据发生了变化", newValue, oldValue)
+          },
+          deep: true // 设置deep监听为true， 默认是false
+        }
+      }
+    })
+
+    // 2.挂载app
+    app.mount("#app")
+  </script>
+</body>
+</html>

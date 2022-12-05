@@ -1,0 +1,122 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    table {
+      border-collapse: collapse;
+      /* text-align: center; */
+    }
+
+    thead {
+      background-color: #f5f5f5;
+    }
+
+    th, td {
+      border: 1px solid #aaa;
+      padding: 8px 16px;
+    }
+
+    .active {
+      background-color: skyblue;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="app">
+    <template v-if="books.length">
+      <table>
+        <thead>
+          <tr>
+            <th colspan="6">{{message}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th></th>
+            <th>书籍名称</th>
+            <th>出版日期</th>
+            <th>价格</th>
+            <th>购买数量</th>
+            <th>操作</th>
+          </tr>
+          <tr v-for="(item, index) in books" :key="item.id">
+            <td>{{index + 1}}</td>
+            <td>{{item.name}}</td>
+            <td>{{item.date}}</td>
+            <td>{{formatPrice(item.price)}}</td>
+            <td>
+              <button @click="decrease(index, item)">-</button>
+              {{item.count}}
+              <button @click="increase(index, item)">+</button>
+            </td>
+            <td>
+              <button @click="remove(index)">
+                移除
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <th>总价</th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th>{{formatPrice(totalPrice)}}</th>
+          </tr>
+        </tbody>
+      </table>
+    </template>
+    <template v-else>
+      <h1>购物车为空, 请添加喜欢的书籍~</h1>
+      <p>商场中有大量的IT类的书籍, 请选择添加学习, 注意保护好自己的头发!</p>
+    </template>
+  </div>
+  
+  <script src="./lib/vue.js"></script>
+  <script src="./data/books.js"></script>
+  <script>
+    // 1.创建app
+    const app = Vue.createApp({
+      // data: option api
+      data: function() {
+        return {
+          message: "书籍购物车",
+          books
+        }
+      },
+      computed: {
+        totalPrice() {
+          return this.books.reduce(
+            (accumulator, currentValue) => accumulator + currentValue.price * currentValue.count,
+            0
+          )
+        }
+      },
+      methods: {
+        formatPrice(price) {
+          return "￥" + price;
+        },
+        remove(index) {
+          this.books.splice(index, 1)
+        },
+        increase(index, item) {
+          item.count++
+        },
+        decrease(index, item) {
+          if(item.count>1) {
+            item.count--
+          }
+          console.log("至少购买1本！")
+        }
+      }
+    })
+
+    // 2.挂载app
+    app.mount("#app")
+  </script>
+</body>
+</html>
