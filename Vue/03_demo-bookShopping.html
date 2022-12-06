@@ -43,13 +43,15 @@
             <th>购买数量</th>
             <th>操作</th>
           </tr>
-          <tr v-for="(item, index) in books" :key="item.id">
+          <tr :class="{active: index === activeIndex}" 
+              @click="activeClick(index)"
+              v-for="(item, index) in books" :key="item.id">
             <td>{{index + 1}}</td>
             <td>{{item.name}}</td>
             <td>{{item.date}}</td>
             <td>{{formatPrice(item.price)}}</td>
             <td>
-              <button @click="decrease(index, item)">-</button>
+              <button :disabled="item.count <= 1" @click="decrease(index, item)">-</button>
               {{item.count}}
               <button @click="increase(index, item)">+</button>
             </td>
@@ -85,7 +87,8 @@
       data: function() {
         return {
           message: "书籍购物车",
-          books
+          books,
+          activeIndex: -1
         }
       },
       computed: {
@@ -97,6 +100,9 @@
         }
       },
       methods: {
+        activeClick(index) {
+          this.activeIndex = index
+        },
         formatPrice(price) {
           return "￥" + price;
         },
@@ -107,10 +113,7 @@
           item.count++
         },
         decrease(index, item) {
-          if(item.count>1) {
-            item.count--
-          }
-          console.log("至少购买1本！")
+          item.count--
         }
       }
     })
