@@ -5,13 +5,37 @@
   <br>
   <h1>info: {{info.counter}}</h1>
   <button @click="info.counter.value++">+1</button>
+
+  <br>
+  <h2>X: {{ scrollPosition.x }}</h2>
+  <h2>Y: {{ scrollPosition.y }}</h2>
+
+  <br><br><br>
+  <br><br><br>
+  <br><br><br>
+  <br><br><br>
+  <br><br><br>
+  <br><br><br>
+  <br><br><br>
+  <br><br><br><br><br><br>
+  <br><br><br>
+  <br><br><br>
+  <br><br><br>
+  <br><br><br>
+  <br><br><br>
+  <br><br><br>
+  <br><br><br>
+  <br><br><br>
+  <br><br><br>
+  <br><br><br>
 </template>
 
 <script>
 import { ref } from 'vue';
-
+import useScrollPosition  from './hooks/useScrollPostion';
 
 export default {
+
   setup() {
     let counter = ref(0)
     const increase = () => {
@@ -22,18 +46,19 @@ export default {
     let info = {
       counter
     }
-    const increaseInfo = () => {
-      info.counter.value++
-    }
 
+    const { scrollPosition } = useScrollPosition()
+    
     return {
       counter,
       increase,
       info,
-      increaseInfo
+      scrollPosition
     }
   }
-}
+  }
+
+
 </script>
 
 <style>
